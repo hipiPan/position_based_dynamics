@@ -27,5 +27,8 @@ public:
     float* positions;
     float* normals;
     float* uvs;
-    Edge* edges;
+    std::vector<Edge> edges;
+    std::vector<std::vector<uint32_t>> faces_edges;
+    std::vector<std::vector<uint32_t>> vertices_edges;
+    std::vector<std::vector<uint32_t>> vertices_faces;
 };
