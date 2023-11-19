@@ -46,6 +46,8 @@ void TriangleMesh::build_neighbors()
     uint32_t temp_edges[6];
     for (int i = 0; i < face_count; ++i)
     {
+        faces_edges[i].resize(3);
+
         temp_v[0] = indices[i * 3 + 0];
         temp_v[1] = indices[i * 3 + 1];
         temp_v[2] = indices[i * 3 + 2];

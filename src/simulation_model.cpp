@@ -1,4 +1,5 @@
 #include "simulation_model.h"
+#include "constraint.h"
 #include "particle_data.h"
 #include "triangle_mesh.h"
 #include "triangle_model.h"
@@ -15,16 +16,24 @@ SimulationModel::SimulationModel()
 SimulationModel::~SimulationModel()
 {
     delete _particles;
+    _particle_offsets.clear();
 
     for (auto tm : _triangle_models)
     {
         delete tm;
     }
     _triangle_models.clear();
+
+    for (auto constraint : _constraints)
+    {
+        delete constraint;
+    }
+    _constraints.clear();
 }
 
 TriangleModel* SimulationModel::add_triangle_model(uint32_t index_count, uint16_t* indices, uint32_t vertex_count, float* positions, float* normals, float* uvs)
 {
+    _particle_offsets.push_back(_particles->x.size());
     for (int i = 0; i < vertex_count; ++i)
     {
         _particles->add_vertex(glm::vec3(positions[i*3], positions[i*3+1], positions[i*3+2]));
@@ -39,8 +48,8 @@ TriangleModel* SimulationModel::add_regular_triangle_model(int width, int height
 {
     glm::mat4 rotation_matrix = glm::eulerAngleYXZ(rotation.x, rotation.y, rotation.z);
 
-    float dx = scale[0] / float(width - 1);
-    float dy = scale[1] / float(height - 1);
+    float dx = scale[0] / float(width);
+    float dy = scale[1] / float(height);
 
     uint32_t vertex_count = width * height;
     float* positions = new float[vertex_count * 3];
@@ -53,12 +62,13 @@ TriangleModel* SimulationModel::add_regular_triangle_model(int width, int height
             float y = dy * (float)i;
 
             glm::vec3 point = transform_point(glm::vec3(x, y, 0.0f), rotation_matrix) + translation;
-            positions[i * width + j] = point.x;
-            positions[i * width + j + 1] = point.y;
-            positions[i * width + j + 2] = point.z;
+            int idx = i * width + j;
+            positions[idx * 3] = point.x;
+            positions[idx * 3 + 1] = point.y;
+            positions[idx * 3 + 2] = point.z;
 
-            uvs[i * width + j] = x / scale[0];
-            uvs[i * width + j + 1] = y / scale[1];
+            uvs[idx * 2] = x / scale[0];
+            uvs[idx * 2 + 1] = y / scale[1];
         }
     }
 
@@ -87,6 +97,12 @@ TriangleModel* SimulationModel::add_regular_triangle_model(int width, int height
     tm->update_normals();
 
     return tm;
+}
+
+void SimulationModel::add_distance_constraint(int p0, int p1, float stiffness)
+{
+    DistanceConstraint* c = new DistanceConstraint(this, p1, p1, stiffness);
+    _constraints.push_back(c);
 }
 
 ParticleData* SimulationModel::get_particles()
