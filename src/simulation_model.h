@@ -25,6 +25,8 @@ public:
 
     std::vector<TriangleModel*>& get_triangle_models() { return _triangle_models; }
 
+    std::vector<Constraint*>& get_constraints() { return _constraints; }
+
 private:
     ParticleData* _particles;
     std::vector<uint32_t> _particle_offsets;

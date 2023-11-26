@@ -10,6 +10,8 @@ public:
 
     virtual ~Constraint() {}
 
+    virtual bool update_constraint() { return true; }
+
     virtual bool solve_position_constraint(int iter) { return true; }
 
     virtual bool solve_velocity_constraint(int iter) { return true; }
