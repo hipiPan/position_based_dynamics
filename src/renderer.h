@@ -21,6 +21,9 @@ public:
 
     void set_camera(Camera* camera);
 
+    void draw_line(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& c);
+    void draw_point(const glm::vec3& p, const glm::vec4& c);
+
 private:
     void update_rendertarget();
 

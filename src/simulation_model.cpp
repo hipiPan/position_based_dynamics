@@ -101,7 +101,7 @@ TriangleModel* SimulationModel::add_regular_triangle_model(int width, int height
 
 void SimulationModel::add_distance_constraint(int p0, int p1, float stiffness)
 {
-    DistanceConstraint* c = new DistanceConstraint(this, p1, p1, stiffness);
+    DistanceConstraint* c = new DistanceConstraint(this, p0, p1, stiffness);
     _constraints.push_back(c);
 }
 

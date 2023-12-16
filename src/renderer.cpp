@@ -108,3 +108,13 @@ void Renderer::render(EzSwapchain swapchain)
 
     _frame_number++;
 }
+
+void Renderer::draw_line(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& c)
+{
+    _debug_pass->draw_line(p0, p1, c);
+}
+
+void Renderer::draw_point(const glm::vec3& p, const glm::vec4& c)
+{
+    _debug_pass->draw_point(p, c);
+}
