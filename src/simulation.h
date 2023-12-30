@@ -12,6 +12,8 @@ public:
     void step(SimulationModel* model);
 
 protected:
+    void apply_accelerations(SimulationModel* model);
+
     void position_constraint_projection(SimulationModel* model);
 
     void velocity_constraint_projection(SimulationModel* model);

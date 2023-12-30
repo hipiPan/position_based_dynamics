@@ -7,7 +7,7 @@
 Simulation::Simulation()
 {
     _sub_steps = 1;
-    _step_time = 0.5f;
+    _step_time = 0.01f;
     _time = 0.0f;
 }
 
@@ -18,6 +18,8 @@ Simulation::~Simulation()
 void Simulation::step(SimulationModel* model)
 {
     ParticleData* particles = model->get_particles();
+
+    apply_accelerations(model);
 
     for (int j = 0; j < particles->x.size(); ++j)
     {
@@ -40,12 +42,22 @@ void Simulation::step(SimulationModel* model)
     _time += _step_time;
 }
 
+void Simulation::apply_accelerations(SimulationModel* model)
+{
+    glm::vec3 gravitation = glm::vec3(0.0f, -9.8f, 0.0f);
+    ParticleData* particles = model->get_particles();
+    for (int i = 0; i < particles->x.size(); ++i)
+    {
+        particles->a[i] = gravitation;
+    }
+}
+
 void Simulation::position_constraint_projection(SimulationModel* model)
 {
     std::vector<Constraint*>& constraints = model->get_constraints();
 
     int iterations = 0;
-    int max_iterations = 2;
+    int max_iterations = 1;
     while (iterations < max_iterations)
     {
         for (auto constraint : constraints)
@@ -62,7 +74,7 @@ void Simulation::velocity_constraint_projection(SimulationModel* model)
     std::vector<Constraint*>& constraints = model->get_constraints();
 
     int iterations = 0;
-    int max_iterations = 2;
+    int max_iterations = 1;
     while (iterations < max_iterations)
     {
         for (auto constraint : constraints)

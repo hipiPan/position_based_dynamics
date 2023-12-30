@@ -17,7 +17,7 @@ bool solve_distance_constraint(
 
     glm::vec3 corr = stiffness * n * (d - rest_length) / w_sum;
     corr0 = inv_mass0 * corr;
-    corr1 = inv_mass1 * corr;
+    corr1 = -inv_mass1 * corr;
 
     return true;
 }

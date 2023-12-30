@@ -32,3 +32,12 @@ void ParticleData::add_vertex(const glm::vec3& vertex)
     v.push_back(glm::vec3(0.0, 0.0, 0.0));
     a.push_back(glm::vec3(0.0, 0.0, 0.0));
 }
+
+void ParticleData::set_mass(int i, float mass)
+{
+    masses[i] = mass;
+    if (mass != 0.0f)
+        inv_masses[i] = 1.0f / mass;
+    else
+        inv_masses[i] = 0.0f;
+}

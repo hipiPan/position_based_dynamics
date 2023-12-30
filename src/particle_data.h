@@ -13,6 +13,8 @@ public:
 
     void add_vertex(const glm::vec3& vertex);
 
+    void set_mass(int i, float mass);
+
     // Mass
     std::vector<float> masses;
     std::vector<float> inv_masses;

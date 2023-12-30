@@ -9,17 +9,17 @@ ClothScene::ClothScene()
 {
     _simulation_model = new SimulationModel();
 
-    int cols = 2;
-    int rows = 2;
+    int cols = 3;
+    int rows = 3;
     glm::vec3 translation = glm::vec3(0.0f);
-    glm::vec3 rotation = glm::vec3(0.0f);
+    glm::vec3 rotation = glm::vec3(0.0f, 3.1415926f / 2.0f, 0.0f);
     glm::vec2 scale = glm::vec2(4.0f, 4.0f);
     _simulation_model->add_regular_triangle_model(cols, rows, translation, rotation, scale);
 
     // Make points static
     ParticleData* particles = _simulation_model->get_particles();
-    particles->masses[0] = 0.0f;
-    particles->masses[rows - 1] = 0.0f;
+    particles->set_mass(0, 0.0f);
+    particles->set_mass(rows - 1, 0.0f);
 
     // Cloth constraints
     float cloth_stiffness = 1.0f;
